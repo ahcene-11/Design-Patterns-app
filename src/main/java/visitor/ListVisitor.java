@@ -50,13 +50,5 @@ public class ListVisitor implements ShapeVisitor {
     @Override
     public void visitGroup(Group group) {
         System.out.printf("%d group [%s]%n", counter++, group.getName());
-
-        // Selon le sujet, la commande "list" montre l'état du niveau courant.
-        // Si on veut afficher le contenu des groupes de manière imbriquée, décommente ceci :
-        /*
-        for (Shape child : group.getChildren()) {
-            child.accept(this);
-        }
-        */
     }
 }
