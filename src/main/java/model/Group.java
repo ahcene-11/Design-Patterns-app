@@ -1,5 +1,7 @@
 package model;
 
+import visitor.ShapeVisitor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,4 +35,8 @@ public class Group implements Shape {
         return null;
     }
 
+    @Override
+    public void accept(ShapeVisitor visitor) {
+        visitor.visitGroup(this);
+    }
 }

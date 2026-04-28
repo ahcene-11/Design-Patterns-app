@@ -1,5 +1,7 @@
 package model;
 
+import visitor.ShapeVisitor;
+
 public class Circle implements Shape {
     private int x, y, radius;
     private Color color;
@@ -19,4 +21,9 @@ public class Circle implements Shape {
     public int getX() { return x; }
     public int getY() { return y; }
     public int getRadius() { return radius; }
+
+    @Override
+    public void accept(ShapeVisitor visitor) {
+        visitor.visitCircle(this);
+    }
 }

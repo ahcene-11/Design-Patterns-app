@@ -1,6 +1,8 @@
 package model;
 
 
+import visitor.ShapeVisitor;
+
 public class Ellipse implements Shape {
     private int x, y, rx, ry;
     private Color color;
@@ -22,4 +24,9 @@ public class Ellipse implements Shape {
     public int getY() { return y; }
     public int getRx() { return rx; }
     public int getRy() { return ry; }
+
+    @Override
+    public void accept(ShapeVisitor visitor) {
+        visitor.visitEllipse(this);
+    }
 }

@@ -1,6 +1,8 @@
 package model;
 
 
+import visitor.ShapeVisitor;
+
 public class Rectangle implements Shape {
     private int x1, y1, x2, y2;
     private Color color;
@@ -22,4 +24,9 @@ public class Rectangle implements Shape {
     public int getY1() { return y1; }
     public int getX2() { return x2; }
     public int getY2() { return y2; }
+
+    @Override
+    public void accept(ShapeVisitor visitor) {
+        visitor.visitRectangle(this);
+    }
 }

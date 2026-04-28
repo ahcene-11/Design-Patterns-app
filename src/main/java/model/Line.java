@@ -1,5 +1,7 @@
 package model;
 
+import visitor.ShapeVisitor;
+
 /**
  * Represents a line defined by two points and a color.
  */
@@ -24,4 +26,9 @@ public class Line implements Shape {
     public int getY1() { return y1; }
     public int getX2() { return x2; }
     public int getY2() { return y2; }
+
+    @Override
+    public void accept(ShapeVisitor visitor) {
+        visitor.visitLine(this);
+    }
 }
