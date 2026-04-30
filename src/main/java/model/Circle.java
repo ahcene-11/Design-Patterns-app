@@ -1,7 +1,9 @@
 package model;
 
 import visitor.ShapeVisitor;
-
+/**
+ * Represente un cercle défini par un centre (x, y), un rayon et une couleur.
+ */
 public class Circle implements Shape {
     private int x, y, radius;
     private Color color;

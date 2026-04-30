@@ -42,7 +42,7 @@ public class GraphicsVisitor implements ShapeVisitor {
     @Override
     public void visitRectangle(Rectangle rectangle) {
         g2d.setColor(getAwtColor(rectangle.getColor()));
-        // AWT drawRect attend (x, y, largeur, hauteur). Il faut donc calculer :
+        // AWT drawRect attend (x, y, largeur, hauteur). donc il faut calculer :
         int width = Math.abs(rectangle.getX2() - rectangle.getX1());
         int height = Math.abs(rectangle.getY2() - rectangle.getY1());
         int x = Math.min(rectangle.getX1(), rectangle.getX2());
@@ -68,7 +68,7 @@ public class GraphicsVisitor implements ShapeVisitor {
 
     @Override
     public void visitGroup(Group group) {
-        // Pour un groupe, on dessine simplement tous ses enfants !
+        // Pour un groupe, on dessine simplement tous ses enfants
         for (Shape child : group.getChildren()) {
             child.accept(this);
         }

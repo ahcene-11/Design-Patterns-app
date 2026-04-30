@@ -4,7 +4,13 @@ import builder.DrawingBuilder;
 import factory.CommandRegistry;
 import model.Shape;
 import org.w3c.dom.*;
+
+import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +33,22 @@ public class XmlDrawingDirector {
      * Lance la lecture du fichier XML et la construction du dessin.
      */
     public void construct(String filePath) throws Exception {
+        File inputFile = new File(filePath);
+
+        // --- validation XSD ---
+        try {
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // On charge ton fichier XSD
+            Schema schema = factory.newSchema(new File("drawing.xsd"));
+            Validator validator = schema.newValidator();
+            // On vérifie le fichier VEC contre les règles du XSD
+            validator.validate(new StreamSource(inputFile));
+            System.out.println("Validation XSD réussie, le fichier est conforme.");
+        } catch (Exception e) {
+            throw new Exception("Le fichier XML est invalide (non conforme au XSD) : " + e.getMessage());
+        }
         builder.reset();
 
-        File inputFile = new File(filePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(inputFile);

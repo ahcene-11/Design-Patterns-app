@@ -6,6 +6,8 @@ import model.Drawing;
 import model.Shape;
 import visitor.ListVisitor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -15,17 +17,15 @@ import java.util.Scanner;
 public class Edit {
 
     public static void main(String[] args) {
-        // 1. Initialisation de nos outils (Patrons)
+
         CommandRegistry registry = new CommandRegistry();
         DrawingFacade facade = new DrawingFacade();
         ListVisitor listVisitor = new ListVisitor();
 
-        // 2. Initialisation du modèle de données (Composite + Observable)
+        // Initialisation du modèle de données (Composite + Observable)
         Drawing currentDrawing = new Drawing();
 
-        // (Optionnel pour l'instant : Ajout de la vue graphique - Patron Observer)
-        // GraphicWindow view = new GraphicWindow();
-        // currentDrawing.addObserver(view);
+        //  Ajout de la vue graphique - Patron Observer
         view.DrawingView window = new view.DrawingView(currentDrawing);
         currentDrawing.addObserver(window);
 
@@ -35,7 +35,9 @@ public class Edit {
         System.out.println("=== Éditeur Vectoriel Démarré ===");
         System.out.println("Tapez vos commandes (ex: line 10 5 42 23 blue). Tapez 'quit' pour quitter.");
 
-        // 3. Boucle principale de l'interpréteur
+        String folder = "dessins/"; // dossier de rangement
+
+        // Boucle principale de l'interpréteur
         while (running) {
             System.out.print("> ");
             String input = scanner.nextLine().trim();
@@ -53,49 +55,79 @@ public class Edit {
                         break;
 
                     case "new":
-                        currentDrawing.clear(); // Vide la liste (et notifie l'Observer !)
+                        currentDrawing.clear(); // Vide la liste (et notifie l'Observer )
                         System.out.println("Nouveau dessin initialisé.");
                         break;
 
                     case "list":
                         listVisitor.reset(); // On remet le compteur à 1
                         for (Shape s : currentDrawing.getShapes()) {
-                            s.accept(listVisitor); // Magie du Visiteur
+                            s.accept(listVisitor);
                         }
                         break;
 
                     case "save":
                         if (parts.length < 2) throw new IllegalArgumentException("Nom de fichier manquant.");
-                        facade.saveDrawing(currentDrawing, parts[1]); // Magie de la Façade
-                        System.out.println("Dessin sauvegardé dans " + parts[1]);
+
+                        String savePath = folder + parts[1];
+                        facade.saveDrawing(currentDrawing, savePath);
+                        System.out.println("Dessin sauvegardé dans " + savePath);
                         break;
 
                     case "load":
                         if (parts.length < 2) throw new IllegalArgumentException("Nom de fichier manquant.");
-                        currentDrawing = facade.loadDrawing(parts[1]); // Magie de la Façade et du Builder
+
+                        String loadPath = folder + parts[1];
+                        currentDrawing = facade.loadDrawing(loadPath);
 
                         // On met à jour la référence dans la fenêtre
                         window.setDrawing(currentDrawing);
 
                         // On réabonne la fenêtre au nouveau dessin pour les futures commandes
                         currentDrawing.addObserver(window);
-                        System.out.println("Dessin chargé depuis " + parts[1]);
+                        System.out.println("Dessin chargé depuis " + loadPath);
                         break;
 
                     case "grp":
+                        if (parts.length < 3) throw new IllegalArgumentException("Usage: grp <nom> <i1,i2...>");
+                        String name = parts[1];
+                        String[] idxStr = parts[2].split(",");
+
+                        List<Integer> idxList = new ArrayList<>();
+                        for (String s : idxStr) {
+                            idxList.add(Integer.parseInt(s.trim()) - 1);
+                        }
+
+                        //  on utilise la factory pour créer le groupe vide
+                        java.util.Map<String, String> props = new java.util.HashMap<>();
+                        props.put("name", name);
+                        model.Shape createdShape = registry.createShape("group", props);
+
+                        if (!(createdShape instanceof model.Group)) {
+                            throw new IllegalStateException("La fabrique n'a pas retourné un Groupe !");
+                        }
+                        model.Group emptyGroup = (model.Group) createdShape;
+
+                        //  on demande au modèle de remplir ce groupe
+                        currentDrawing.groupShapes(idxList, emptyGroup);
+
+                        System.out.println("Groupe '" + name + "' créé.");
+                        break;
+
                     case "ugrp":
-                        // La logique de groupe utilise les index de la liste.
-                        // Je place un bouchon (stub) ici comme autorisé par le sujet.
-                        System.out.println("[Bouchon] Commande de groupe à implémenter...");
+                        if (parts.length < 2) throw new IllegalArgumentException("Usage: ugrp <index>");
+                        int idxToUngroup = Integer.parseInt(parts[1]) - 1;
+                        currentDrawing.ungroupShapes(idxToUngroup);
+                        System.out.println("Groupe dissous.");
                         break;
 
                     default:
-                        // Si ce n'est pas une commande système, on demande à la Fabrique !
+                        // Si ce n'est pas une commande système, on demande à la Fabrique
                         if (registry.supports(command)) {
-                            // La Fabrique instancie la forme géométrique
+                            // La Fabrique instancie la forme
                             Shape newShape = registry.executeCommand(input);
 
-                            // On l'ajoute au dessin (CECI DÉCLENCHE L'OBSERVATEUR POUR LA FENÊTRE !)
+                            // On l'ajoute au dessin (et on notifie la vue)
                             currentDrawing.addShape(newShape);
                         } else {
                             System.out.println("Erreur : Commande inconnue '" + command + "'.");

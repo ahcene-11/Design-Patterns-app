@@ -78,9 +78,9 @@ public class XmlSaveVisitor implements ShapeVisitor {
         // On "descend" dans le groupe
         indentLevel++;
         for (Shape child : group.getChildren()) {
-            child.accept(this); // Magie du polymorphisme et de la récursivité
+            child.accept(this);
         }
-        indentLevel--; // On "remonte"
+        indentLevel--;
 
         xmlBuilder.append(String.format("%s</group>\n", getIndent()));
     }

@@ -2,7 +2,9 @@ package model;
 
 
 import visitor.ShapeVisitor;
-
+/**
+ * Represente une ellipse définie par un centre (x, y), un rayon vertical et un rayon horizontal et une couleur.
+ */
 public class Ellipse implements Shape {
     private int x, y, rx, ry;
     private Color color;

@@ -2,7 +2,9 @@ package model;
 
 
 import visitor.ShapeVisitor;
-
+/**
+ * Represente un rectangle défini par deux points (coin supérieur gauche et coin inférieur droit) et une couleur.
+ */
 public class Rectangle implements Shape {
     private int x1, y1, x2, y2;
     private Color color;

@@ -17,6 +17,7 @@ public class CommandRegistry {
         creators = new HashMap<>();
 
         // On enregistre toutes nos fabriques au démarrage
+        creators.put("group", new GroupCreator());
         creators.put("line", new LineCreator());
         creators.put("rect", new RectangleCreator());
         creators.put("circ", new CircleCreator());
@@ -26,7 +27,7 @@ public class CommandRegistry {
     /**
      * Point d'entrée pour l'interpréteur de commandes du terminal.
      * Transforme la commande texte en dictionnaire (Map), puis délègue la création.
-     * * @param commandLine La commande brute (ex: "line 10 5 42 23 blue")
+     *  @param commandLine La commande brute (ex: "line 10 5 42 23 blue")
      * @return L'objet Shape instancié
      */
     public Shape executeCommand(String commandLine) {
@@ -69,14 +70,14 @@ public class CommandRegistry {
             throw new IllegalArgumentException("Arguments manquants pour la commande : " + type);
         }
 
-        // On appelle la méthode de création pure
+        // On appelle la méthode de création générique avec le type et les propriétés extraites
         return createShape(type, props);
     }
 
     /**
      * Point d'entrée "pur", idéal pour le Directeur XML.
      * Crée une forme directement à partir d'un type et d'un dictionnaire de propriétés.
-     * * @param type Le type de forme (ex: "line")
+     * @param type Le type de forme (ex: "line")
      * @param props Le dictionnaire des propriétés
      * @return L'objet Shape instancié
      */

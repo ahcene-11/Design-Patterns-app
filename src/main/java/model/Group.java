@@ -5,6 +5,9 @@ import visitor.ShapeVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represente un groupe de formes. Un groupe peut contenir des formes simples (ligne, rectangle, ellipse, cercle) ou d'autres groupes.
+ */
 public class Group implements Shape {
     private String name;
     private List<Shape> children = new ArrayList<>();

@@ -1,6 +1,5 @@
 package factory;
 
-import model.Circle;
 import model.Color;
 import model.Rectangle;
 import model.Shape;

@@ -28,12 +28,11 @@ public class DrawingView extends JFrame implements DrawingObserver {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null); // Centre la fenêtre à l'écran
 
-        // Création du panneau de dessin blanc
+        // panneau de dessin blanc
         this.panel = new DrawingPanel();
         this.panel.setBackground(Color.WHITE);
         this.add(panel);
 
-        // On affiche la fenêtre
         this.setVisible(true);
     }
 
@@ -42,14 +41,12 @@ public class DrawingView extends JFrame implements DrawingObserver {
      */
     @Override
     public void onDrawingChanged() {
-        // On demande au panneau de se redessiner
         panel.repaint();
     }
 
 
     public void setDrawing(Drawing newDrawing) {
         this.drawing = newDrawing;
-        // On force un rafraîchissement immédiat
         this.onDrawingChanged();
     }
 
@@ -59,15 +56,15 @@ public class DrawingView extends JFrame implements DrawingObserver {
     private class DrawingPanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
-            super.paintComponent(g); // Efface l'écran (fond blanc)
+            super.paintComponent(g);
 
-            // On active l'antialiasing pour avoir de beaux traits lisses
+            // l'antialiasing pour avoir de beaux traits lisses (ce n'etais pas necessaire mais bon...)
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
                     java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
 
 
-            // On instancie notre visiteur de dessin, et on visite tout le modèle !
+            // On instancie notre visiteur de dessin, et on visite tout le modèle pour le dessiner
             GraphicsVisitor renderer = new GraphicsVisitor(g2d);
             for (Shape shape : drawing.getShapes()) {
                 shape.accept(renderer);

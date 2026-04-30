@@ -6,6 +6,9 @@ import model.Shape;
 
 import java.util.Map;
 
+/**
+ * Créateur concret pour la forme Line.
+ */
 public class LineCreator implements ShapeCreator {
     @Override
     public Shape create(Map<String, String> props) {

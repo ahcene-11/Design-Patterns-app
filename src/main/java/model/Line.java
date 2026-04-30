@@ -3,7 +3,7 @@ package model;
 import visitor.ShapeVisitor;
 
 /**
- * Represents a line defined by two points and a color.
+ * Represente une ligne définie par deux points et une couleur.
  */
 public class Line implements Shape {
     private int x1, y1, x2, y2;

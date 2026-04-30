@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="colorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="red"/>
+            <xs:enumeration value="green"/>
+            <xs:enumeration value="blue"/>
+            <xs:enumeration value="black"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="shapeContainer">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="line">
+                <xs:complexType>
+                    <xs:attribute name="x1" type="xs:int" use="required"/>
+                    <xs:attribute name="y1" type="xs:int" use="required"/>
+                    <xs:attribute name="x2" type="xs:int" use="required"/>
+                    <xs:attribute name="y2" type="xs:int" use="required"/>
+                    <xs:attribute name="color" type="colorType" use="required"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="rect">
+                <xs:complexType>
+                    <xs:attribute name="x1" type="xs:int" use="required"/>
+                    <xs:attribute name="y1" type="xs:int" use="required"/>
+                    <xs:attribute name="x2" type="xs:int" use="required"/>
+                    <xs:attribute name="y2" type="xs:int" use="required"/>
+                    <xs:attribute name="color" type="colorType" use="required"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="circ">
+                <xs:complexType>
+                    <xs:attribute name="x" type="xs:int" use="required"/>
+                    <xs:attribute name="y" type="xs:int" use="required"/>
+                    <xs:attribute name="radius" type="xs:int" use="required"/>
+                    <xs:attribute name="color" type="colorType" use="required"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="elli">
+                <xs:complexType>
+                    <xs:attribute name="x" type="xs:int" use="required"/>
+                    <xs:attribute name="y" type="xs:int" use="required"/>
+                    <xs:attribute name="rx" type="xs:int" use="required"/>
+                    <xs:attribute name="ry" type="xs:int" use="required"/>
+                    <xs:attribute name="color" type="colorType" use="required"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="group">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="shapeContainer">
+                            <xs:attribute name="name" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:element name="drawing" type="shapeContainer"/>
+
+</xs:schema>
