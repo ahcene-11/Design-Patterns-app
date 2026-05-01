@@ -5,6 +5,8 @@ import builder.DrawingBuilder;
 import factory.CommandRegistry;
 import io.XmlDrawingDirector;
 import model.Drawing;
+import visitor.GraphicsVisitor;
+import visitor.ShapeVisitor;
 import visitor.XmlSaveVisitor;
 
 import javax.imageio.ImageIO;
@@ -47,7 +49,7 @@ public class DrawingFacade {
      * Sauvegarde un dessin dans un fichier XML en utilisant le Visiteur.
      */
     public void saveDrawing(Drawing drawing, String destPath) throws IOException {
-        XmlSaveVisitor visitor = new XmlSaveVisitor();
+        ShapeVisitor visitor = new XmlSaveVisitor();
         File outputFile = new File(destPath);
 
         // --- cree le dossier parent s'il n'existe pas ---
@@ -61,7 +63,7 @@ public class DrawingFacade {
 
         // On écrit le résultat du visiteur dans le fichier
         try (FileWriter writer = new FileWriter(destPath)) {
-            writer.write(visitor.getResult());
+            writer.write(((XmlSaveVisitor) visitor).getResult());
         }
     }
 
@@ -106,7 +108,7 @@ public class DrawingFacade {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // On dessine sur l'image exactement comme sur l'écran
-        visitor.GraphicsVisitor renderer = new visitor.GraphicsVisitor(g2d);
+        ShapeVisitor renderer = new GraphicsVisitor(g2d);
         for (model.Shape shape : drawing.getShapes()) {
             shape.accept(renderer);
         }

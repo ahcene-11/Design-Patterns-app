@@ -6,7 +6,8 @@ package model;
 public enum Color {
     BLUE,
     GREEN,
-    RED;
+    RED,
+    BLACK;
 
     // Vous pourrez en ajouter d'autres plus tard si besoin
 }
