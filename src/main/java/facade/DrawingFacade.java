@@ -24,8 +24,8 @@ public class DrawingFacade {
 
     private CommandRegistry registry;
 
-    public DrawingFacade() {
-        this.registry = new CommandRegistry();
+    public DrawingFacade(CommandRegistry registry) {
+        this.registry = registry;
     }
 
     /**

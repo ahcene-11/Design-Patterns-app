@@ -19,7 +19,7 @@ public class Edit {
     public static void main(String[] args) {
 
         CommandRegistry registry = new CommandRegistry();
-        DrawingFacade facade = new DrawingFacade();
+        DrawingFacade facade = new DrawingFacade(registry);
         ListVisitor listVisitor = new ListVisitor();
 
         // Initialisation du modèle de données (Composite + Observable)

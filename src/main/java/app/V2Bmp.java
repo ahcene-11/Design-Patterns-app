@@ -1,6 +1,7 @@
 package app;
 
 import facade.DrawingFacade;
+import factory.CommandRegistry;
 import model.Drawing;
 
 /**
@@ -18,7 +19,8 @@ public class V2Bmp {
         String sourceFile = args[0];
         String destFile = args[1];
 
-        DrawingFacade facade = new DrawingFacade();
+        CommandRegistry registry = new CommandRegistry();
+        DrawingFacade facade = new DrawingFacade(registry);
 
         try {
             System.out.println("Chargement du dessin vectoriel...");

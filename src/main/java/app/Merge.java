@@ -1,6 +1,8 @@
 package app;
 
 import facade.DrawingFacade;
+import factory.CommandRegistry;
+
 /**
  * Programme utilitaire : Fusionne deux fichiers de dessin vectoriel (.vec) en un seul.
  */
@@ -11,7 +13,8 @@ public class Merge {
             return;
         }
 
-        DrawingFacade facade = new DrawingFacade();
+        CommandRegistry registry = new CommandRegistry();
+        DrawingFacade facade = new DrawingFacade(registry);
         try {
             facade.mergeDrawings(args[0], args[1], args[2]);
             System.out.println("Fusion réussie !");
